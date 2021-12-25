@@ -1,6 +1,4 @@
-================================
-Recipe Wizard API by Jakob Fipke
-================================
+# Recipe Wizard API by Jakob Fipke
 
 Hello! This is a fun project I worked on in my Internet Software Architecture course this last term.
 
@@ -18,9 +16,8 @@ all of the other express routers outside of app.js.
 
 Follow the guide below to test it out on your local machine.
 
-================================
-Testing on your local machine
-================================
+
+# Testing on your local machine
 
 First, run an npm install to install all of the dependencies used in this project.
 
