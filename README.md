@@ -31,11 +31,11 @@ This will create a database and user specific to that database to use for this A
 
 Now you will need to create a .env file at the project root with the following information:
 
-  DB_HOST=localhost
-  DB_USER=<Name of db user you created>
-  DB_PASSWORD=<Password for db user you created>
-  DB_DATABASE=<Name of db you created>
-  SECRET=<Any random string to be used as jwt secret>
+DB_HOST=localhost
+DB_USER=<Name of db user you created>
+DB_PASSWORD=<Password for db user you created>
+DB_DATABASE=<Name of db you created>
+SECRET=<Any random string to be used as jwt secret>
 
 To initialize the database with 3 sample recipes with ingredients and instructions, navigate to the /setup folder and run 'node initialSetup.js'.
 
