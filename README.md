@@ -25,29 +25,24 @@ To test this API locally, you will need to have MySQL running on your local mach
 
 The way we recommend, which isn't too difficult, is to install XAMPP with MySQL and PHPMyAdmin.
 
-Within PHPMyAdmin, create a new user for localhost called 'recipewizard' (or whatever other name you like,
-just make sure to change it in the .env file). Before creating the user, under 'Database for user account',
-check both boxes: 'Create database with same name and grant all privileges', and 'Grant all privileges on 
-wildcard name (username\_%).'
+Within PHPMyAdmin, create a new user for localhost called 'recipewizard'. Before creating the user, under 'Database for user account', check both boxes: 'Create database with same name and grant all privileges', and 'Grant all privileges on wildcard name (username\_%).'
 
-This will create a database and user specific to that database to use for this API. Just make sure the
-information in the .env file matches the database and user you set up.
+This will create a database and user specific to that database to use for this API.
 
-To initialize the database with 3 sample recipes with ingredients and instructions, navigate to the 
-/setup folder and run 'node initialSetup.js'.
+Now you will need to create a .env file at the project root with the following information:
+
+  DB_HOST=localhost
+  DB_USER=<Name of db user you created>
+  DB_PASSWORD=<Password for db user you created>
+  DB_DATABASE=<Name of db you created>
+  SECRET=<Any random string to be used as jwt secret>
+
+To initialize the database with 3 sample recipes with ingredients and instructions, navigate to the /setup folder and run 'node initialSetup.js'.
 
 Now you will need to run the API. To do this, run the command 'node app.js' from the root folder.
 
-Now that it's running, the easiest way to test out the endpoints is to preview the swagger.json file
-with VSCode's Swagger Viewer extension. Once you have the preview open, you will have to first use
-the /register endpoint to register a new user. Once that user has been created, use that same email
-and password in the /login endpoint to get a JWT token. Now, you must use that JWT token to authorize
-your requests to other endpoints by entering 'Bearer <Your_User_Token>' (click Authorize at top right 
-of page to do this). Now you can use any of the other endpoints!
+Now that it's running, the easiest way to test out the endpoints is to preview the swagger.json file with VSCode's Swagger Viewer extension. Once you have the preview open, you will have to first use the /register endpoint to register a new user. Once that user has been created, use that same email and password in the /login endpoint to get a JWT token. Now, you must use that JWT token to authorize your requests to other endpoints by entering 'Bearer <Your_User_Token>' (click Authorize at top right of page to do this). Now you can use any of the other endpoints!
 
-The endpoint I am most proud of, and the main feature of this API is the /users/{userId}/suggested 
-endpoint. This endpoint takes all of the ingredients saved to a specific user, and returns a list of 
-recipes, along with which ingredients from each recipe it matched on, and a list of all ingredients
-and instructions related to each recipe.
+The endpoint I am most proud of, and the main feature of this API is the /users/{userId}/suggested endpoint. This endpoint takes all of the ingredients saved to a specific user, and returns a list of recipes, along with which ingredients from each recipe it matched on, and a list of all ingredients and instructions related to each recipe.
 
 Hope you enjoyed!
