@@ -1,0 +1,1044 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is an API that allows users to upload and save recipes. It also allows for them to add the ingredients they currently have on hand and return any suggested recipes for those ingredients.",
+    "version": "1.0.0",
+    "title": "Recipe Wizard",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "jakobtaze@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:8888",
+  "basePath": "/",
+  "securityDefinitions": {
+    "Bearer": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "schemes": [
+    "http"
+  ],
+  "tags": [
+    {
+      "name": "register",
+      "description": "Create a user"
+    },
+    {
+      "name": "login",
+      "description": "Retrieve JWT token"
+    },
+    {
+      "name": "users",
+      "description": "Operations about users"
+    },
+    {
+      "name": "recipes",
+      "description": "Operations about recipes"
+    }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "tags": [
+          "register"
+        ],
+        "summary": "Create a new user with email and password",
+        "description": "",
+        "operationId": "addUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object to be created.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RegisterResponse"
+            }
+          }
+        }
+      }
+    },
+    "/login": {
+      "post": {
+        "tags": [
+          "login"
+        ],
+        "summary": "Login with email and password to get JWT token",
+        "description": "",
+        "operationId": "getToken",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "User object to be created.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/LoginResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Get all users",
+        "description": "",
+        "operationId": "getUsers",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UsersResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Find user by ID",
+        "description": "Returns a single user",
+        "operationId": "getUserById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserResponse"
+            }
+          }
+        }
+      },
+      "put": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Change user's password",
+        "description": "",
+        "operationId": "putUser",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Change user's password",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Password": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user to change",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": {
+                  "type": "boolean"
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/recipes": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Get all recipes",
+        "description": "",
+        "operationId": "getRecipes",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RecipesGetResponse"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Create a new recipe",
+        "description": "",
+        "operationId": "postRecipe",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Recipe object to be created.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Recipe"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RecipePostResponse"
+            }
+          }
+        }
+      }
+    },
+    "/recipes/{recipeId}": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "recipes"
+        ],
+        "summary": "Find recipe by ID",
+        "description": "Returns a single recipe",
+        "operationId": "getRecipeById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "recipeId",
+            "in": "path",
+            "description": "ID of recipe to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/RecipeGetResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/suggested": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Get suggested recipes based on user's ingredients",
+        "description": "",
+        "operationId": "getSuggested",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SuggestedResponse"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/batch": {
+      "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Add list of ingredients",
+        "description": "",
+        "operationId": "postListIng",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Ingredients to be added",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "list": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/ingredients": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Get user's ingredients",
+        "description": "",
+        "operationId": "getUserIngs",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserIngredients"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Save an ingredient",
+        "description": "",
+        "operationId": "saveIng",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Ingredient to save",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/ingredients/{ingredientId}": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Get one of a user's ingredients",
+        "description": "",
+        "operationId": "getUseIng",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "ingredientId",
+            "in": "path",
+            "description": "ID of ingredient to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/UserIngredient"
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Delete one of a user's ingredients",
+        "description": "",
+        "operationId": "deleteUseIng",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "ingredientId",
+            "in": "path",
+            "description": "ID of ingredient to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/recipes": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Get user's saved recipes",
+        "description": "",
+        "operationId": "getUserRecipes",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SavedRecipes"
+            }
+          }
+        }
+      },
+      "post": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Save an recipe",
+        "description": "",
+        "operationId": "saveRec",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Recipe to save",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "recipeId": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/recipes/{savedRecipeId}": {
+      "get": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Get one of a user's saved recipes",
+        "description": "",
+        "operationId": "getUserRecipe",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "savedRecipeId",
+            "in": "path",
+            "description": "ID of saved recipe to return",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "$ref": "#/definitions/SavedRecipe"
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "Bearer": []
+          }
+        ],
+        "tags": [
+          "users"
+        ],
+        "summary": "Delete one of a user's saved recipes",
+        "description": "",
+        "operationId": "deleteUserRecipe",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "description": "ID of user",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          },
+          {
+            "name": "savedRecipeId",
+            "in": "path",
+            "description": "ID of saved recipe to delete",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "successful operation",
+            "schema": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "User": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "UserResponse": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "integer"
+        },
+        "Email": {
+          "type": "string"
+        }
+      }
+    },
+    "UsersResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "users": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "LoginResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        },
+        "user": {
+          "type": "object"
+        },
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "RegisterResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "Recipe": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        }
+      }
+    },
+    "RecipePostResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "entry": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer"
+            },
+            "title": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "RecipesGetResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "recipes": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "RecipeGetResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "type": "boolean"
+        },
+        "recipe": {
+          "type": "object",
+          "properties": {
+            "Id": {
+              "type": "integer"
+            },
+            "Title": {
+              "type": "string"
+            },
+            "Description": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "SuggestedResponse": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Id": {
+            "type": "number"
+          },
+          "Title": {
+            "type": "string"
+          },
+          "Description": {
+            "type": "string"
+          },
+          "matching": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "Id": {
+                  "type": "number"
+                },
+                "Name": {
+                  "type": "string"
+                },
+                "Optional": {
+                  "type": "boolean"
+                },
+                "Amount": {
+                  "type": "string"
+                },
+                "Description": {
+                  "type": "string"
+                },
+                "RecipeId": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "ingredients": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "Id": {
+                  "type": "number"
+                },
+                "Name": {
+                  "type": "string"
+                },
+                "Optional": {
+                  "type": "boolean"
+                },
+                "Amount": {
+                  "type": "string"
+                },
+                "Description": {
+                  "type": "string"
+                },
+                "RecipeId": {
+                  "type": "number"
+                }
+              }
+            }
+          },
+          "instructions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "Id": {
+                  "type": "number"
+                },
+                "Step": {
+                  "type": "number"
+                },
+                "Title": {
+                  "type": "string"
+                },
+                "Details": {
+                  "type": "string"
+                },
+                "RecipeId": {
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "UserIngredients": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/UserIngredient"
+      }
+    },
+    "UserIngredient": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "number"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "UserId": {
+          "type": "number"
+        }
+      }
+    },
+    "SavedRecipes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/SavedRecipe"
+      }
+    },
+    "SavedRecipe": {
+      "type": "object",
+      "properties": {
+        "Id": {
+          "type": "number"
+        },
+        "RecipeId": {
+          "type": "number"
+        },
+        "UserId": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}
